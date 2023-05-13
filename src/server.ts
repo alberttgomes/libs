@@ -1,4 +1,5 @@
-import { object, z } from "zod";
+import axios from "axios";
+import { z } from "zod";
 
 const userSchema = z.object({
     country: z.string()
@@ -26,10 +27,23 @@ const SaveUserInDatabase = (user: User) => {
 
     console.log(`Your Data: ${email}, ${number} and ${username}, is ready to be saved?`)
 
-    // GET API
-    const api = async (user:User) => {
-        // TO DO
+    if (user instanceof z.object) {
+            // GET API
+            async (user:User) => {
+                // DOING
+                const response = await axios.post("/api/users", user)
+                    .then((res) => {
+                        res.status == 200 ?
+                            console.log(`Success ${res.data}`) : console.error(`${res.status}`)
+                    });
+
+                return response;
+            };
     }
+    else {
+        console.log(`User isn't instance of z object ${user}`)
+    }
+
 }
 
 SaveUserInDatabase({
